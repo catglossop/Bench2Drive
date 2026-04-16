@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bench2drive"
+version = "0.1.0"
+description = "Bench2Drive leaderboard and scenario_runner (srunner). Install the CARLA Python API separately; it is not published on PyPI."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE" }
+dependencies = [
+    "dictor",
+    "requests",
+    "opencv-python>=4.2.0.32",
+    "pygame",
+    "tabulate",
+    "pexpect",
+    "transforms3d",
+    "py-trees==0.8.3",
+    "numpy>=1.18.4",
+    "networkx>=2.2",
+    "Shapely>=1.7.1",
+    "psutil",
+    "xmlschema>=1.0.18",
+    "ephem",
+    "matplotlib",
+    "six",
+    "simple-watchdog-timer",
+]
+
+[project.urls]
+Homepage = "https://github.com/Thinklab-SJTU/Bench2Drive"
+
+[tool.setuptools.packages.find]
+where = ["leaderboard", "scenario_runner"]
+
+[tool.setuptools.package-data]
+srunner = [
+    "examples/*.xml",
+    "examples/*.xosc",
+    "examples/catalogs/*.xosc",
+    "autoagents/*.txt",
+]
+leaderboard = ["autoagents/*.txt"]
