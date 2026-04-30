@@ -2,7 +2,7 @@
 BASE_PORT=30000
 BASE_TM_PORT=50000
 IS_BENCH2DRIVE=True
-BASE_ROUTES=leaderboard/data/bench2drive220
+BASE_ROUTES=leaderboard/leaderboard/data/bench2drive220
 TEAM_AGENT=team_code/uniad_b2d_agent.py
 # Must set YOUR_CKPT_PATH
 TEAM_CONFIG=Bench2DriveZoo/adzoo/uniad/configs/stage2_e2e/base_e2e_b2d.py+YOUR_CKPT_PATH/uniad_base_b2d.pth

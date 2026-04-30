@@ -76,7 +76,7 @@ def find_free_port(starting_port):
 
 def get_weather_id(weather_conditions):
     from xml.etree import ElementTree as ET
-    tree = ET.parse('leaderboard/data/weather.xml')
+    tree = ET.parse('/data/weather.xml')
     root = tree.getroot()
     def conditions_match(weather, conditions):
         for (key, value) in weather:
@@ -131,12 +131,12 @@ class LeaderboardEvaluator(object):
                 )
 
         # Load agent
-        module_name = os.path.basename(args.agent).split('.')[0]
-        sys.path.insert(0, os.path.dirname(args.agent))
+        module_name = os.path.basename(config.agent).split('.')[0]
+        sys.path.insert(0, os.path.dirname(config.agent))
         self.module_agent = importlib.import_module(module_name)
 
         # Create the ScenarioManager
-        self.manager = ScenarioManager(args.timeout, self.statistics_manager, args.debug)
+        self.manager = ScenarioManager(config.timeout, self.statistics_manager, config.debug)
 
         # Time control for summary purposes
         self._start_time = GameTime.get_time()

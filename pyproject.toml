@@ -35,11 +35,21 @@ Homepage = "https://github.com/Thinklab-SJTU/Bench2Drive"
 [tool.setuptools.packages.find]
 where = ["leaderboard", "scenario_runner"]
 
+# Ship Bench2Drive's route XMLs and metric examples alongside the Python code so
+# downstream installs (e.g. ogbench-carla) can locate them via
+# ``importlib.resources``. See ``leaderboard/leaderboard/data_paths.py`` for the
+# Python accessor.
 [tool.setuptools.package-data]
+leaderboard = [
+    "autoagents/*.txt",
+    "data/*.xml",
+]
 srunner = [
     "examples/*.xml",
     "examples/*.xosc",
     "examples/catalogs/*.xosc",
     "autoagents/*.txt",
+    "data/*.xml",
+    "metrics/data/*",
 ]
-leaderboard = ["autoagents/*.txt"]
+

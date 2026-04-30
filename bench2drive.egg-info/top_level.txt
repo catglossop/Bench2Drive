@@ -1,5 +1,4 @@
 Docs
-data
 docs
 leaderboard
 scripts

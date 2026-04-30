@@ -174,7 +174,8 @@ def main(args):
 
 if __name__=='__main__':
     argparser = argparse.ArgumentParser(description=__doc__)
-    argparser.add_argument('-f', '--file', nargs=None, default="leaderboard/data/bench2drive220.xml", help='route file')
+    from leaderboard.data_paths import route_xml
+    argparser.add_argument('-f', '--file', nargs=None, default=str(route_xml("bench2drive220")), help='route file')
     argparser.add_argument('-r', '--result_file', nargs=None, default="", help='result json file')
     argparser.add_argument('-t', '--host', default='localhost', help='IP of the host server (default: localhost)')
     argparser.add_argument('-p', '--port', nargs=1, default=2000, help='carla rpc port')
