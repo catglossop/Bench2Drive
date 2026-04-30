@@ -11,12 +11,24 @@ This module provides a parser for scenario configuration files based on OpenSCEN
 
 from __future__ import print_function
 
-from distutils.util import strtobool
 import re
 import copy
 import datetime
 import math
 import operator
+
+
+def strtobool(value):
+    """Replacement for distutils.util.strtobool (removed in Python 3.12).
+
+    Returns 1 for truthy strings, 0 for falsy strings; raises ValueError otherwise.
+    """
+    val = str(value).strip().lower()
+    if val in ('y', 'yes', 't', 'true', 'on', '1'):
+        return 1
+    if val in ('n', 'no', 'f', 'false', 'off', '0'):
+        return 0
+    raise ValueError(f"invalid truth value {value!r}")
 
 import py_trees
 import carla

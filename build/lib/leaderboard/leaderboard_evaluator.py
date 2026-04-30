@@ -15,13 +15,26 @@ from __future__ import print_function
 import traceback
 import argparse
 from argparse import RawTextHelpFormatter
-from distutils.version import LooseVersion
 import importlib
 import os
-import pkg_resources
 import sys
 import carla
 import signal
+
+# Python 3.12 removes both ``distutils`` and the ``pkg_resources`` shim. Use the
+# stdlib equivalents on 3.8+, falling back gracefully for very old environments.
+try:
+    from packaging.version import Version
+except ImportError:  # pragma: no cover
+    from distutils.version import LooseVersion as Version  # type: ignore[no-redef]
+
+try:
+    from importlib.metadata import version as _pkg_version  # Python 3.8+
+except ImportError:  # pragma: no cover
+    import pkg_resources  # type: ignore[import]
+
+    def _pkg_version(name: str) -> str:  # type: ignore[no-redef]
+        return pkg_resources.get_distribution(name).version
 
 from srunner.scenariomanager.carla_data_provider import *
 from srunner.scenariomanager.timer import GameTime
@@ -87,7 +100,7 @@ class LeaderboardEvaluator(object):
     client_timeout = 300.0  # in seconds
     frame_rate = 20.0      # in Hz
 
-    def __init__(self, args, statistics_manager):
+    def __init__(self, config, statistics_manager):
         """
         Setup CARLA client and world
         Setup ScenarioManager
@@ -108,12 +121,14 @@ class LeaderboardEvaluator(object):
         self._ros1_server = None
 
         # Setup the simulation
-        self.client, self.client_timeout, self.traffic_manager = self._setup_simulation(args)
+        self.client, self.client_timeout, self.traffic_manager = self._setup_simulation(config)
 
-        dist = pkg_resources.get_distribution("carla")
-        if dist.version != 'leaderboard':
-            if LooseVersion(dist.version) < LooseVersion('0.9.10'):
-                raise ImportError("CARLA version 0.9.10.1 or newer required. CARLA version found: {}".format(dist))
+        carla_version = _pkg_version("carla")
+        if carla_version != 'leaderboard':
+            if Version(carla_version) < Version('0.9.10'):
+                raise ImportError(
+                    "CARLA version 0.9.10.1 or newer required. CARLA version found: {}".format(carla_version)
+                )
 
         # Load agent
         module_name = os.path.basename(args.agent).split('.')[0]
