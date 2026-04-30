@@ -19,7 +19,15 @@ from numpy import random
 from six import iteritems
 
 import carla
-from srunner.tests.carla_mocks.agents.navigation.global_route_planner import GlobalRoutePlanner
+
+# Bench2Drive historically imported the mock planner unconditionally; against a live
+# simulator + OpenDRIVE map that raises IndexError inside ``Waypoint.next``.
+# Prefer CARLA's shipped planner via ``PythonAPI/carla/agents`` (ensure that directory
+# is on ``sys.path`` first — ``ogbench.carla.carla_utils.ensure_carla_python_api_on_path``).
+try:
+    from agents.navigation.global_route_planner import GlobalRoutePlanner
+except ImportError:
+    from srunner.tests.carla_mocks.agents.navigation.global_route_planner import GlobalRoutePlanner
 
 
 def calculate_velocity(actor):
