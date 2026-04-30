@@ -273,7 +273,8 @@ class RouteScenario(BasicScenario):
         Searches through the 'scenarios' folder for all the Python classes
         """
         # Path of all scenario at "srunner/scenarios" folder
-        scenarios_list = glob.glob("{}/srunner/scenarios/*.py".format(os.getenv('SCENARIO_RUNNER_ROOT', "./")))
+        curr_path = os.path.dirname(os.path.abspath(__file__))
+        scenarios_list = glob.glob(os.path.join(curr_path, "../../srunner/scenarios/*.py"))
 
         all_scenario_classes = {}
 
