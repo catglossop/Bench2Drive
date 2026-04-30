@@ -87,7 +87,7 @@ class LeaderboardEvaluator(object):
     client_timeout = 300.0  # in seconds
     frame_rate = 20.0      # in Hz
 
-    def __init__(self, args, statistics_manager):
+    def __init__(self, config, statistics_manager):
         """
         Setup CARLA client and world
         Setup ScenarioManager
@@ -108,7 +108,7 @@ class LeaderboardEvaluator(object):
         self._ros1_server = None
 
         # Setup the simulation
-        self.client, self.client_timeout, self.traffic_manager = self._setup_simulation(args)
+        self.client, self.client_timeout, self.traffic_manager = self._setup_simulation(config)
 
         dist = pkg_resources.get_distribution("carla")
         if dist.version != 'leaderboard':
@@ -116,7 +116,7 @@ class LeaderboardEvaluator(object):
                 raise ImportError("CARLA version 0.9.10.1 or newer required. CARLA version found: {}".format(dist))
 
         # Load agent
-        module_name = os.path.basename(args.agent).split('.')[0]
+        module_name = os.path.basename(configagent).split('.')[0]
         sys.path.insert(0, os.path.dirname(args.agent))
         self.module_agent = importlib.import_module(module_name)
 
